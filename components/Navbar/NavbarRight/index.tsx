@@ -1,3 +1,4 @@
+import useCurrentUser from "@/hooks/useCurrentUser";
 import useLoginModal from "@/hooks/useLoginModal";
 import useRegisterModal from "@/hooks/useRegisterModal";
 import { AddIcon } from "@chakra-ui/icons";
@@ -6,13 +7,13 @@ import UserDropdown from "./UserDropdown";
 type Props = {};
 
 const NavbarRight = (props: Props) => {
-  const isLoggedIn = false;
+  const { data: currentUser } = useCurrentUser();
   const loginModal = useLoginModal();
   const registerModal = useRegisterModal();
 
   return (
     <>
-      {isLoggedIn ? (
+      {currentUser ? (
         <Flex alignItems={"center"}>
           <Button
             variant={"solid"}
@@ -23,7 +24,7 @@ const NavbarRight = (props: Props) => {
           >
             <AddIcon />
           </Button>
-          <UserDropdown />
+          <UserDropdown user={currentUser} />
         </Flex>
       ) : (
         <Flex alignItems={"center"}>
@@ -31,7 +32,7 @@ const NavbarRight = (props: Props) => {
             variant={"solid"}
             colorScheme={"orange"}
             size={"sm"}
-            mr={4}
+            mr={{ base: 0, md: 4 }}
             onClick={() => loginModal.onOpen()}
           >
             Login
@@ -42,6 +43,7 @@ const NavbarRight = (props: Props) => {
             size={"sm"}
             mr={4}
             onClick={() => registerModal.onOpen()}
+            display={{ base: "none", md: "unset" }}
           >
             Register
           </Button>

@@ -10,10 +10,14 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { FiLogOut } from "react-icons/fi";
+import { signOut } from "next-auth/react";
+import { FC } from "react";
 
-type Props = {};
+interface IUserDropdownProps {
+  user: Record<string, any>;
+}
 
-const UserDropdown = (props: Props) => {
+const UserDropdown: FC<IUserDropdownProps> = ({ user }) => {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
     <Menu placement="bottom-end">
@@ -28,7 +32,7 @@ const UserDropdown = (props: Props) => {
       </MenuButton>
       <MenuList>
         <MenuItem as={Link} href="/test">
-          My Profile
+          My Profile: {user.username}
         </MenuItem>
 
         <MenuItem
@@ -37,7 +41,7 @@ const UserDropdown = (props: Props) => {
         >
           {colorMode === "light" ? "Light Mode" : "Dark Mode"}
         </MenuItem>
-        <MenuItem icon={<FiLogOut />} color="red.300">
+        <MenuItem icon={<FiLogOut />} color="red.300" onClick={() => signOut()}>
           Logout
         </MenuItem>
       </MenuList>
